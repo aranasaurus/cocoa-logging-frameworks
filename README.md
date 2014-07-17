@@ -2,8 +2,8 @@
 
 --
 
-* [Slides](http://aranasaurus.github.io/logging-frameworks-talk)
+* [Slides](http://aranasaurus.github.io/cocoa-logging-frameworks/slides)
 
 --
 
-Repurposed from [Nate Goldman's presentation](http://ngoldman.github.io/uc-2014-start-building-your-app)
+Built with [reveal.js](https://github.com/hakimel/reveal.js.git)
