@@ -1,26 +1,20 @@
 {
-  "name": "uc-2014-start-building-your-app",
+  "name": "cocoa-logging-frameworks",
   "version": "0.1.0",
   "private": true,
-  "description": "An introductory talk from the 2014 Esri User Conference on developing applications using OAuth 2 and the ArcGIS for Developers website.",
-  "homepage": "http://ngoldman.github.io/uc-2014-start-building-your-app",
+  "description": "",
+  "homepage": "http://aranasaurus.github.io/cocoa-logging-frameworks",
   "scripts": {
     "test": "grunt test",
     "start": "grunt serve"
   },
   "author": {
-    "name": "Patrick Arlt",
-    "email": "patrickarlt@esri.com"
+    "name": "Ryan Arana",
+    "email": "rarana@esri.com"
   },
-  "contributors": [
-    {
-      "name": "Nate Goldman",
-      "email": "ngoldman@esri.com"
-    }
-  ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/ngoldman/uc-2014-start-building-your-app.git"
+    "url": "git://github.com/aranasaurus/cocoa-logging-frameworks.git"
   },
   "engines": {
     "node": "~0.10.0"

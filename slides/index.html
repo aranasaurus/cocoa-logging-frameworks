@@ -19,17 +19,45 @@
 <!--[if lt IE 9]>
 <script src="lib/js/html5shiv.js"></script>
 <![endif]-->
+<style>
+  .larger {
+    font-size: larger
+  }
+  .smaller {
+    font-size: smaller;
+  }
+  .normal {
+    font-size: normal;
+  }
+  .current-visible.disappear,
+  .current-visible.disappear-inline {
+    display:none;
+  }
+  .current-visible.disappear.current-fragment {
+    display:block;
+  }
+  .current-visible.disappear-inline.current-fragment {
+    display:inline;
+  }
+  .inner-box {
+    background-color: #eee8d5;
+  }
+  .inner-box p {
+    padding-bottom: 5px;
+    font-size: smaller;
+  }
+</style>
 </head>
 <body>
 
-<a href="https://github.com/aranasaurus/cocoa-logging-frameworks/slides"><img style="z-index: 1000; position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
+<a href="https://github.com/aranasaurus/cocoa-logging-frameworks"><img style="z-index: 1000; position: absolute; top: 0; right: 0; border: 0;" src="https://github-camo.global.ssl.fastly.net/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
 
 <div class="reveal">
 
   <div class="slides">
 
     <section>
-      <h1>Let's Talk Logging Frameworks</h1>
+      <h1>Let's Talk About<br/> Cocoa Logging <br />Frameworks</h1>
       <p>Ryan Arana | <a href="http://twitter.com/aranasaurus">@aranasaurus</a></p>
       <p style="font-size: smaller">Esri Portland R&amp;D Center</p>
       <p><a href="http://aranasaurus.github.io/cocoa-logging-frameworks/slides/">http://bit.ly/1suQX9Z</a></p>
@@ -44,51 +72,109 @@
     </section>
 
     <section>
-      <h1>Roadmap</h1>
-      <ol>
-        <!-- TODO: make sure this slide gets updated with the actual roadmap when finished with the rest of the slides. -->
-        <li class="fragment roll-in">What do you want from a logging framework? <b>AKA:</b> What's wrong with NSLog?</li>
-        <li class="fragment roll-in">Frameworks
-          <ul>
-            <li class="fragment roll-in"><a href="">CocoaLumberjack</a></li>
-            <li class="fragment roll-in"><a href="">NSLogger</a></li>
-            <li class="fragment roll-in">Crash Reporting Services</li>
-          </ul>
-        </li>
-        <li class="fragment roll-in">Q &amp; A</li>
-      </ol>
+      <!-- TODO: make sure this slide gets updated with the actual roadmap when finished with the rest of the slides. -->
+      <h1>What are we going to talk about?</h1>
+      <br />
+      <h2>
+        <ol style="list-style-type:disc;">
+          <li class="fragment fade-in">Logging</li>
+          <li class="fragment fade-in">NSLog</li>
+          <li class="fragment fade-in">Frameworks</li>
+          <li class="fragment fade-in">Crash Reporting Services</li>
+          <li class="fragment fade-in">Q &amp; A</li>
+        </ol>
+      </h2>
     </section>
 
-    <section id="features">
+    <section id="logging">
       <section>
-        <h1>Features</h1>
+        <h1>Logging</h1>
+        <div class="fragment">
+          <p class="larger"><strong>What</strong> do you log?</p>
+          <pre class="fragment current-visible disappear"><code data-trim class="objc">
+            NSLog(@"ohai");
+          </code></pre>
+          <pre class="fragment current-visible disappear"><code data-trim class="objc">
+            NSLog(@"sending data to '%@': %@", url, jsonData);
+          </code></pre>
+          <pre class="fragment current-visible disappear"><code data-trim class="objc">
+            NSLog(@"touchLocation: (%f, %f)", touchLocation.x, touchLocation.y);
+          </code></pre>
+          <pre class="fragment current-visible disappear"><code data-trim class="objc">
+            NSLog(@"Error opening file %@: %@", fileUrl, [error debugDescription]);
+          </code></pre>
+        </div>
+        <div class="fragment">
+          <p class="larger"><strong>Why</strong> do you log it?</p>
+          <div class="inner-box">
+            <p class="fragment current-visible disappear">Debugging</p>
+            <p class="fragment current-visible disappear">Program flow tracing and exploration</p>
+            <p class="fragment current-visible disappear">Tweaking or fine-tuning specific operations or parameters</p>
+            <p class="fragment current-visible disappear">Reporting errors</p>
+            <p class="fragment current-visible disappear">Reporting situations that <strong><em>might</em></strong> become an error</p>
+            <p class="fragment current-visible disappear">Reporting situations that <strong><em>shouldn't</em></strong> happen</p>
+          </div>
+        </div>
+        <div class="fragment">
+          <p><strong>Where</strong> do you log it?</p>
+          <div class="inner-box">
+            <p class="fragment current-visible disappear">To the <em>console</em>.</p>
+            <p class="fragment current-visible disappear">To a <em>file</em>.</p>
+            <p class="fragment current-visible disappear">To a <em>local database</em>.</p>
+            <p class="fragment current-visible disappear">To a <em>server</em>.</p>
+          </div>
+        </div>
       </section>
-      <section>
-        <h1>Must Haves</h1>
-        <ul>
-          <li class="fragment roll-in">Log Levels</li>
-          <li class="fragment roll-in">
-            Log Retrieval
-            <ul>
-              <li class="fragment roll-in">Log to file?</li>
-              <li class="fragment roll-in">Log to server?</li>
-            </ul>
-          </li>
-          <li class="fragment roll-in">Performant/thread-safe</li>
-          <li class="fragment roll-in">Easy to use</li>
-        </ul>
+      <!--
+      <section id="features">
+        <section>
+          <h1>Features</h1>
+        </section>
+        <section>
+          <h1>Must Haves</h1>
+          <ul>
+            <li class="fragment roll-in">Log Levels</li>
+            <li class="fragment roll-in">
+              Log Retrieval
+              <ul>
+                <li class="fragment roll-in">Log to file?</li>
+                <li class="fragment roll-in">Log to server?</li>
+              </ul>
+            </li>
+            <li class="fragment roll-in">Performant/thread-safe</li>
+            <li class="fragment roll-in">Easy to use</li>
+          </ul>
+        </section>
+        <section>
+          <h1>Nice to Haves</h1>
+          <ul>
+            <li class="fragment roll-in">Built-in Tagging support</li>
+            <li class="fragment roll-in">Custom Formatting</li>
+            <li class="fragment roll-in">Custom Log Levels</li>
+            <li class="fragment roll-in">Multi-threaded</li>
+            <li class="fragment roll-in">File, line#, method name, etc</li>
+          </ul>
+        </section>
       </section>
-      <section>
-        <h1>Nice to Haves</h1>
-        <ul>
-          <li class="fragment roll-in">Built-in Tagging support</li>
-          <li class="fragment roll-in">Custom Formatting</li>
-          <li class="fragment roll-in">Custom Log Levels</li>
-          <li class="fragment roll-in">Multi-threaded</li>
-          <li class="fragment roll-in">File, line#, method name, etc</li>
-        </ul>
-      </section>
+      -->
     </section>
+
+    <section>
+      <div class="fragment roll-in">NSLog
+        <div class="fragment fade-in">The good</div>
+        <div class="fragment fade-in">The bad</div>
+        <div class="fragment fade-in">The ugly</div>
+      </div>
+      <div class="fragment roll-in">Frameworks
+        <ul>
+          <li class="fragment roll-in"><a href="">CocoaLumberjack</a></li>
+          <li class="fragment roll-in"><a href="">NSLogger</a></li>
+          <li class="fragment roll-in">Crash Reporting Services</li>
+        </ul>
+      </div>
+      <div class="fragment roll-in">Q &amp; A</div>
+    </section>
+
     <section id="nslog">
       <section>
         <h1>NSLog(...)</h1>
@@ -134,13 +220,13 @@
 </div>
 
 <script src="lib/js/head.min.js"></script>
-<script src="js/reveal.min.js"></script>
+<script src="js/reveal.js"></script>
 
 <script>
   // Full list of configuration options available here:
   // https://github.com/hakimel/reveal.js#configuration
   Reveal.initialize({
-    controls: false,
+    controls: true,
     progress: true,
     history: true,
     center: true,
