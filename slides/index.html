@@ -21,13 +21,13 @@
 <![endif]-->
 <style>
   .larger {
-    font-size: larger
+    font-size: larger !important;
   }
   .smaller {
-    font-size: smaller;
+    font-size: smaller !important;
   }
   .normal {
-    font-size: normal;
+    font-size: normal !important;
   }
   .current-visible.disappear,
   .current-visible.disappear-inline {
@@ -39,8 +39,9 @@
   .current-visible.disappear-inline.current-fragment {
     display:inline;
   }
-  .inner-box {
-    background-color: #eee8d5;
+  .inner-box, blockquote {
+    background-color: #eee8d5 !important;
+    background: #eee8d5 !important;
   }
   .inner-box p {
     padding-bottom: 5px;
@@ -72,7 +73,6 @@
     </section>
 
     <section>
-      <!-- TODO: make sure this slide gets updated with the actual roadmap when finished with the rest of the slides. -->
       <h1>What are we going to talk about?</h1>
       <br />
       <h2>
@@ -80,7 +80,6 @@
           <li class="fragment fade-in">Logging</li>
           <li class="fragment fade-in">NSLog</li>
           <li class="fragment fade-in">Frameworks</li>
-          <li class="fragment fade-in">Crash Reporting Services</li>
           <li class="fragment fade-in">Q &amp; A</li>
         </ol>
       </h2>
@@ -107,72 +106,42 @@
         <div class="fragment">
           <p class="larger"><strong>Why</strong> do you log it?</p>
           <div class="inner-box">
-            <p class="fragment current-visible disappear">Debugging</p>
             <p class="fragment current-visible disappear">Program flow tracing and exploration</p>
-            <p class="fragment current-visible disappear">Tweaking or fine-tuning specific operations or parameters</p>
+            <p class="fragment current-visible disappear">Debugging</p>
+            <p class="fragment current-visible disappear">Fine-tuning specific operations or parameters</p>
             <p class="fragment current-visible disappear">Reporting errors</p>
             <p class="fragment current-visible disappear">Reporting situations that <strong><em>might</em></strong> become an error</p>
             <p class="fragment current-visible disappear">Reporting situations that <strong><em>shouldn't</em></strong> happen</p>
           </div>
         </div>
         <div class="fragment">
-          <p><strong>Where</strong> do you log it?</p>
+          <p class="larger"><strong>Where</strong> do you log it?</p>
           <div class="inner-box">
             <p class="fragment current-visible disappear">To the <em>console</em>.</p>
             <p class="fragment current-visible disappear">To a <em>file</em>.</p>
-            <p class="fragment current-visible disappear">To a <em>local database</em>.</p>
             <p class="fragment current-visible disappear">To a <em>server</em>.</p>
           </div>
         </div>
+        <div class="fragment">
+          <p class="larger"><strong>When</strong> do you log it?</p>
+          <div class="inner-box">
+            <p class="fragment current-visible disappear">During <em>development</em>.</p>
+            <p class="fragment current-visible disappear">In <em>release builds</em>?</p>
+            <p class="fragment current-visible disappear">Configurable at <em>run-time</em>?</p>
+          </div>
+        </div>
       </section>
-      <!--
-      <section id="features">
-        <section>
-          <h1>Features</h1>
-        </section>
-        <section>
-          <h1>Must Haves</h1>
-          <ul>
-            <li class="fragment roll-in">Log Levels</li>
-            <li class="fragment roll-in">
-              Log Retrieval
-              <ul>
-                <li class="fragment roll-in">Log to file?</li>
-                <li class="fragment roll-in">Log to server?</li>
-              </ul>
-            </li>
-            <li class="fragment roll-in">Performant/thread-safe</li>
-            <li class="fragment roll-in">Easy to use</li>
-          </ul>
-        </section>
-        <section>
-          <h1>Nice to Haves</h1>
-          <ul>
-            <li class="fragment roll-in">Built-in Tagging support</li>
-            <li class="fragment roll-in">Custom Formatting</li>
-            <li class="fragment roll-in">Custom Log Levels</li>
-            <li class="fragment roll-in">Multi-threaded</li>
-            <li class="fragment roll-in">File, line#, method name, etc</li>
-          </ul>
-        </section>
+      <section>
+        <h1>Common Tools</h1>
+        <br />
+        <h2>Log Levels</h2>
+        <p class="fragment">Specify the <em>importance</em> of the message.</p>
+        <p class="fragment">Generally configured at <em>compile</em> time.</p>
+        <br />
+        <h2>Tags</h2>
+        <p class="fragment">Specify the <em>topic</em> of the message.</p>
+        <p class="fragment">Generally configured at <em>log review</em> time.</p>
       </section>
-      -->
-    </section>
-
-    <section>
-      <div class="fragment roll-in">NSLog
-        <div class="fragment fade-in">The good</div>
-        <div class="fragment fade-in">The bad</div>
-        <div class="fragment fade-in">The ugly</div>
-      </div>
-      <div class="fragment roll-in">Frameworks
-        <ul>
-          <li class="fragment roll-in"><a href="">CocoaLumberjack</a></li>
-          <li class="fragment roll-in"><a href="">NSLogger</a></li>
-          <li class="fragment roll-in">Crash Reporting Services</li>
-        </ul>
-      </div>
-      <div class="fragment roll-in">Q &amp; A</div>
     </section>
 
     <section id="nslog">
