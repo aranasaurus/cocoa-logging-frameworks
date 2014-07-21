@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/reveal.css">
 <link rel="stylesheet" href="css/theme/solarized.css">
 <!-- For syntax highlighting -->
-<link rel="stylesheet" href="lib/css/zenburn.css">
+<link rel="stylesheet" href="lib/css/github.css">
 <!-- If the query includes 'print-pdf', use the PDF print sheet -->
 <script>
   document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
@@ -88,6 +88,17 @@
       </h2>
     </section>
 
+    <section>
+      <h1>What aren't we going to talk about?</h1>
+      <br />
+      <h2>
+        <ol style="list-style-type:disc;">
+          <li class="fragment fade-in">Analytics</li>
+          <li class="fragment fade-in">Crash Reporting Services</li>
+        </ol>
+      </h2>
+    </section>
+
     <section id="logging">
       <section>
         <h1>Logging</h1>
@@ -97,7 +108,7 @@
             NSLog(@"ohai");
           </code></pre>
           <pre class="fragment current-visible disappear"><code data-trim class="objc">
-            NSLog(@"sending data to '%@': %@", url, jsonData);
+            NSLog(@"sending data to %@: %@", url, jsonData);
           </code></pre>
           <pre class="fragment current-visible disappear"><code data-trim class="objc">
             NSLog(@"touchLocation: (%f, %f)", touchLocation.x, touchLocation.y);
@@ -161,8 +172,8 @@
         <h2>The bad</h2>
         <ul>
           <li class="fragment" data-fragment-index="0">It's not very flexible.</li>
-          <li class="fragment" data-fragment-index="3">It's slow.</li>
-          <li class="fragment" data-fragment-index="4">It's synchronous.</li>
+          <li class="fragment" data-fragment-index="2">It's slow.</li>
+          <li class="fragment" data-fragment-index="6">It's synchronous.</li>
         </ul>
         <div class="fragment current-visible disappear" data-fragment-index="1">
           <div class="smaller">From the <a href="https://developer.apple.com/library/ios/documentation/cocoa/reference/foundation/miscellaneous/foundation_functions/reference/reference.html#//apple_ref/c/func/NSLog">NSLog Documentation</a>:
@@ -175,7 +186,22 @@
             <p style="font-size:66%"><span class="red">*</span>(also sends the message to stderr if stderr is going to a terminal, so it'll show up in XCode console).</p>
           </div>
         </div>
-        <div class="fragment current-visible disappear" data-fragment-index="5">
+        <div class="fragment current-visible disappear inner-box smaller" data-fragment-index="3">
+          <p class="larger">What does <code>NSLog</code> do when I call <code>NSLog(message)</code>?</p>
+          <ol>
+            <li>Opens a client connection to the ASL daemon.</li>
+            <li>Sends the message.</li>
+            <li>Closes the connection.</li>
+          </ol>
+        </div>
+        <pre class="fragment current-visible disappear" data-fragment-index="4"><code data-trim class="objc">
+            NSLog(@"ohai");
+        </code></pre>
+          <pre class="fragment current-visible disappear" data-fragment-index="5"><code data-trim class="objc">
+            NSLog(@"touchLocation: (%f, %f)", touchLocation.x, touchLocation.y);
+          </code></pre>
+        <div class="fragment current-visible disappear" style="padding-top:1em;" data-fragment-index="7">
+          <p class="smaller">From the <a href="https://developer.apple.com/library/ios/documentation/cocoa/reference/foundation/miscellaneous/foundation_functions/reference/reference.html#//apple_ref/c/func/NSLog">NSLog Documentation</a>:</p>
           <blockquote cite="https://developer.apple.com/library/ios/documentation/cocoa/reference/foundation/miscellaneous/foundation_functions/reference/reference.html#//apple_ref/c/func/NSLog">
             Output from NSLog is serialized, in that only one thread in a process can be doing the writing/logging described above at a time. All attempts at writing/logging a message complete before the next thread can begin its attempts.
           </blockquote>
@@ -223,9 +249,11 @@
     // Factor of the display size that should remain empty around the content
     margin: 0.1,
 
+    width: 1200,
+    height: 780,
     // Bounds for smallest/largest possible scale to apply to content
-    minScale: 1.0,
-    maxScale: 1.0,
+    minScale: 0.5,
+    maxScale: 2.0,
 
     theme: 'solarized', // available themes are in /css/theme
     transition: 'concave', // default/cube/page/concave/zoom/linear/fade/none
