@@ -29,6 +29,9 @@
   .normal {
     font-size: normal !important;
   }
+  .red {
+    color: #dc322f;
+  }
   .current-visible.disappear,
   .current-visible.disappear-inline {
     display:none;
@@ -146,31 +149,48 @@
 
     <section id="nslog">
       <section>
-        <h1>NSLog(...)</h1>
+        <h1>NSLog</h1>
       </section>
-    </section>
-
-    <section id="frameworks">
-      <section><h1>Frameworks</h1></section>
-
       <section>
-        <h1>CocoaLumberjack</h1>
+        <h2>The good</h2>
+        <ul>
+          <li class="fragment">It's already included in your project!</li>
+        </ul>
       </section>
-
       <section>
-        <h1>NSLogger</h1>
+        <h2>The bad</h2>
+        <ul>
+          <li class="fragment" data-fragment-index="0">It's not very flexible.</li>
+          <li class="fragment" data-fragment-index="3">It's slow.</li>
+          <li class="fragment" data-fragment-index="4">It's synchronous.</li>
+        </ul>
+        <div class="fragment current-visible disappear" data-fragment-index="1">
+          <div class="smaller">From the <a href="https://developer.apple.com/library/ios/documentation/cocoa/reference/foundation/miscellaneous/foundation_functions/reference/reference.html#//apple_ref/c/func/NSLog">NSLog Documentation</a>:
+            <blockquote cite="https://developer.apple.com/library/ios/documentation/cocoa/reference/foundation/miscellaneous/foundation_functions/reference/reference.html#//apple_ref/c/func/NSLog">
+              Logs an <strong>error message</strong> to the Apple System Log facility.<span class="red">*</span>
+            </blockquote>
+            <blockquote>
+              If you want to direct output elsewhere, you need to use a <strong>custom logging facility</strong>.
+            </blockquote>
+            <p style="font-size:66%"><span class="red">*</span>(also sends the message to stderr if stderr is going to a terminal, so it'll show up in XCode console).</p>
+          </div>
+        </div>
+        <div class="fragment current-visible disappear" data-fragment-index="5">
+          <blockquote cite="https://developer.apple.com/library/ios/documentation/cocoa/reference/foundation/miscellaneous/foundation_functions/reference/reference.html#//apple_ref/c/func/NSLog">
+            Output from NSLog is serialized, in that only one thread in a process can be doing the writing/logging described above at a time. All attempts at writing/logging a message complete before the next thread can begin its attempts.
+          </blockquote>
+        </div>
       </section>
-    </section>
-
-    <section id="crash-reporting">
-      <section><h1>Crash Reporting</h1></section>
-
       <section>
-        <h1>Crashlytics</h1>
-      </section>
-
-      <section>
-        <h1>HockeyApp</h1>
+        <h2>The ugly</h2>
+        <ul>
+          <li class="fragment">Everything is an "error"</li>
+          <li class="fragment">Everything shows up in the device logs
+            <ul>
+              <li class="fragment"><span class="smaller">...unless you have a preprocessor macro to remove the NSLog calls in release builds.</span></li>
+            </ul>
+          </li>
+        </ul>
       </section>
     </section>
 
