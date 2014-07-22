@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/reveal.css">
 <link rel="stylesheet" href="css/theme/solarized.css">
 <!-- For syntax highlighting -->
-<link rel="stylesheet" href="lib/css/github.css">
+<link rel="stylesheet" href="lib/css/xcode.css">
 <!-- If the query includes 'print-pdf', use the PDF print sheet -->
 <script>
   document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
@@ -29,9 +29,16 @@
   .normal {
     font-size: normal !important;
   }
-  .red {
-    color: #dc322f;
-  }
+
+  .yellow { color: #b58900; }
+  .orange { color: #cb4b16; }
+  .red { color: #dc322f; }
+  .magenta { color: #d33682; }
+  .violet { color: #6c71c4; }
+  .blue { color: #268bd2; }
+  .cyan { color: #2aa198; }
+  .green { color: #859900; }
+
   .current-visible.disappear,
   .current-visible.disappear-inline {
     display:none;
@@ -218,6 +225,98 @@
           </li>
         </ul>
       </section>
+    </section>
+
+    <section>
+      <h1>Frameworks</h1>
+    </section>
+
+    <section id="CocoaLumberjack">
+      <section>
+        <h1>CocoaLumberjack</h1>
+      </section>
+      <section>
+        <h2>Strengths</h2>
+        <ul>
+          <li class="fragment roll-in">Fast!</li>
+          <li class="fragment roll-in">Flexible!</li>
+          <li class="fragment roll-in">Lots of features</li>
+          <li class="fragment roll-in">Pretty simple to set up</li>
+          <li class="fragment roll-in">Decent amount of helpful documentation</li>
+          <li class="fragment roll-in">Actively maintained</li>
+          <li class="fragment roll-in">Supports log <strong><span class="yellow">c</span><span class="orange">o</span><span class="magenta">l</span><span class="violet">o</span><span class="blue">r</span><span class="green">s</span></strong> in XCode (and AppCode)</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Weaknesses</h2>
+        <ul>
+          <li class="fragment roll-in">Singletons</li>
+          <li class="fragment roll-in">No built-in tag support.</li>
+          <li class="fragment">So features. Much daunting.
+            <br />
+            <img src="sofeatures.jpg" />
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Set up</h2>
+        <p>Read the <a href="https://github.com/CocoaLumberjack/CocoaLumberjack/wiki/GettingStarted">Getting Started</a> guide.</p>
+        <hr />
+        <br />
+        <ol style="width: 100%;">
+          <li class="fragment">
+            <p>Get the files and add them to your project.</p>
+            <ul class="fragment current-visible disappear">
+              <li>DDLog - <em>required</em></li>
+              <li>DDASLLogger - <em>optional</em></li>
+              <li>DDTTYLogger - <em>optional</em></li>
+              <li>DDFileLogger - <em>optional</em></li>
+            </ul>
+          </li>
+          <li class="fragment">
+            <p>Add logger(s) to the <code>DDLog</code> singleton instance.</p>
+            <pre class="fragment current-visible disappear"><code class="objc" style="white-space: pre-wrap">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+}
+            </code></pre>
+            <pre class="fragment current-visible disappear"><code class="objc" style="white-space: pre-wrap">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    DDFileLogger *fileLogger = [DDFileLogger new];
+    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+
+    [DDLog addLogger:fileLogger];
+}
+            </code></pre>
+          </li>
+          <li class="fragment">
+            <p>Use <code>DDLog</code> methods instead of <code>NSLog</code></p>
+            <ul class="fragment current-visible disappear">
+              <li>DDLogError</li>
+              <li>DDLogWarn</li>
+              <li>DDLogInfo</li>
+              <li>DDLogDebug</li>
+              <li>DDLogVerbose</li>
+            </ul>
+          </li>
+          <li class="fragment">
+            <p>Set the log level for your build</p>
+            <pre class="fragment current-visible disappear"><code data-trim class="objc">
+            static const int ddLogLevel = LOG_LEVEL_DEBUG;
+            </code></pre>
+            <pre class="fragment current-visible disappear"><code data-trim class="objc">
+#ifdef DEBUG
+  static const int ddLogLevel = LOG_LEVEL_DEBUG; // or LOG_LEVEL_VERBOSE if you like
+#else
+  static const int ddLogLevel = LOG_LEVEL_ERROR; // or LOG_LEVEL_WARN if you like
+#endif
+            </code></pre>
+          </li>
+        </ol>
+      </section>
+    </section>
+
+    <section id="NSLogger">
+      <h1>NSLogger</h1>
     </section>
 
     <section>
