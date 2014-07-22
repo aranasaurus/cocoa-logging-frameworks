@@ -277,6 +277,7 @@
             <p>Add logger(s) to the <code>DDLog</code> singleton instance.</p>
             <pre class="fragment current-visible disappear"><code class="objc" style="white-space: pre-wrap">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
 }
             </code></pre>
             <pre class="fragment current-visible disappear"><code class="objc" style="white-space: pre-wrap">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -289,7 +290,7 @@
             </code></pre>
           </li>
           <li class="fragment">
-            <p>Use <code>DDLog</code> methods instead of <code>NSLog</code></p>
+            <p>Use <code>DDLog</code> macros instead of <code>NSLog</code></p>
             <ul class="fragment current-visible disappear">
               <li>DDLogError</li>
               <li>DDLogWarn</li>
@@ -312,6 +313,10 @@
             </code></pre>
           </li>
         </ol>
+      </section>
+
+      <section>
+        <h1>Demo Time</h1>
       </section>
     </section>
 
