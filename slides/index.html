@@ -95,7 +95,7 @@
         <ol style="list-style-type:disc;">
           <li class="fragment fade-in">Logging</li>
           <li class="fragment fade-in">NSLog</li>
-          <li class="fragment fade-in">Frameworks</li>
+          <li class="fragment fade-in">CocoaLumberjack</li>
           <li class="fragment fade-in">Q &amp; A</li>
         </ol>
       </h2>
@@ -159,15 +159,13 @@
         </div>
       </section>
       <section>
-        <h1>Common Tools</h1>
-        <br />
-        <h2>Log Levels</h2>
+        <h1>Log Levels</h1>
         <p class="fragment">Specify the <em>importance</em> of the message.</p>
         <p class="fragment">Generally configured at <em>compile</em> time.</p>
         <br />
-        <h2>Tags</h2>
+        <h1 class="fragment">Tags</h1>
         <p class="fragment">Specify the <em>topic</em> of the message.</p>
-        <p class="fragment">Generally configured at <em>log review</em> time.</p>
+        <p class="fragment">Generally utilized at <em>log review</em> time.</p>
       </section>
     </section>
 
@@ -176,12 +174,14 @@
         <h1>NSLog</h1>
       </section>
       <section>
+        <img src="thegood.jpg" />
         <h2>The good</h2>
         <ul>
           <li class="fragment">It's already included in your project!</li>
         </ul>
       </section>
       <section>
+        <img src="thebad.jpg" style="height:320px;" />
         <h2>The bad</h2>
         <ul>
           <li class="fragment" data-fragment-index="0">It's not very flexible.</li>
@@ -221,6 +221,7 @@
         </div>
       </section>
       <section>
+        <img src="theugly.jpg" />
         <h2>The ugly</h2>
         <ul>
           <li class="fragment">Everything is an "error"</li>
@@ -233,14 +234,12 @@
       </section>
     </section>
 
-    <section>
-      <h1>Frameworks</h1>
-    </section>
-
     <section id="CocoaLumberjack">
       <section>
         <h1>CocoaLumberjack</h1>
-        <img style="border:none; box-shadow:none;" src="LumberjackLogo.png" />
+        <img style="border:none; box-shadow:none; width:300px;" src="LumberjackLogo.png" />
+        <br />
+        <a href="https://github.com/CocoaLumberjack/CocoaLumberjack" class="larger">github.com/CocoaLumberjack</a>
       </section>
       <section>
         <h2>Strengths</h2>
@@ -343,7 +342,7 @@
       </section>
 
       <section>
-        <h2>Advanced Bits</h2>
+        <h1>Advanced Bits</h1>
       </section>
       <section>
         <h2>The Macros</h2>
@@ -374,16 +373,16 @@
       <section>
         <h2>Log Levels</h2>
         <ul>
-          <li class="fragment">Comes with 5 levels by default
+          <li class="fragment">Defined as bit masks</li>
+          <li class="fragment">Comes with 5 levels/flags by default
             <ul>
-              <li>Error</li>
-              <li>Warn</li>
-              <li>Info</li>
-              <li>Debug</li>
-              <li>Verbose</li>
+              <li>Error (0x00001)</li>
+              <li>Warn (0x00010)</li>
+              <li>Info (0x00100)</li>
+              <li>Debug (0x01000)</li>
+              <li>Verbose (0x10000)</li>
             </ul>
           </li>
-          <li class="fragment">Defined as bit masks</li>
           <li class="fragment">You can override the log levels with your own:
             <ol>
               <li class="fragment"><code>#undef</code> the default ones and their macros</li>
@@ -505,16 +504,23 @@
       </section>
     </section>
 
-    <section id="NSLogger">
-      <h1>NSLogger</h1>
-    </section>
-
     <section>
       <h1>Q &amp; A</h1>
     </section>
 
+    <section id="Links">
+      <h1>Links</h1>
+      <ul>
+        <li><a href="https://github.com/CocoaLumberjack/CocoaLumberjack/wiki">CocoaLumberjack Wiki</a></li>
+        <li>Ditching NSLog <a href="http://www.theonlylars.com/blog/2012/07/03/ditching-nslog-advanced-ios-logging-part-1/">Part 1</a> and <a href="http://www.theonlylars.com/blog/2012/07/29/ditching-nslog-advanced-ios-logging-part-2/">Part 2</a></li>
+        <li>NSLogger - <a href="https://github.com/fpillet/NSLogger">github.com/fpillet/NSLogger</a></li>
+        <li>ECLogging - <a href="https://github.com/elegantchaos/ECLogging">github.com/elegantchaos/ECLogging</a></li>
+        <li>Google Toolbox for Mac - <a href="https://code.google.com/p/google-toolbox-for-mac/source/browse/trunk/Foundation/GTMLogger.h">GTMLogger</a></li>
+      </ul>
+    </section>
+
     <section>
-      <h1>Thanks</h1>
+      <h1>Thanks!</h1>
       <p>Twitter: <a href="http://twitter.com/aranasaurus">@aranasaurus</a></p>
       <p>Slides:  <a href="http://aranasaurus.github.io/cocoa-logging-frameworks/slides/">http://bit.ly/1suQX9Z</a></p>
     </section>
