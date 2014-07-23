@@ -39,6 +39,8 @@
   .cyan { color: #2aa198; }
   .green { color: #859900; }
 
+  ul { max-width: 100%; }
+
   .current-visible.disappear,
   .current-visible.disappear-inline {
     display:none;
@@ -56,6 +58,10 @@
   .inner-box p {
     padding-bottom: 5px;
     font-size: smaller;
+  }
+
+  .reveal pre code {
+    max-height: inherit;
   }
 </style>
 </head>
@@ -234,6 +240,7 @@
     <section id="CocoaLumberjack">
       <section>
         <h1>CocoaLumberjack</h1>
+        <img style="border:none; box-shadow:none;" src="LumberjackLogo.png" />
       </section>
       <section>
         <h2>Strengths</h2>
@@ -242,7 +249,7 @@
           <li class="fragment roll-in">Flexible!</li>
           <li class="fragment roll-in">Lots of features</li>
           <li class="fragment roll-in">Pretty simple to set up</li>
-          <li class="fragment roll-in">Decent amount of helpful documentation</li>
+          <li class="fragment roll-in">Lots of helpful documentation</li>
           <li class="fragment roll-in">Actively maintained</li>
           <li class="fragment roll-in">Supports log <strong><span class="yellow">c</span><span class="orange">o</span><span class="magenta">l</span><span class="violet">o</span><span class="blue">r</span><span class="green">s</span></strong> in XCode (and AppCode)</li>
         </ul>
@@ -251,11 +258,31 @@
         <h2>Weaknesses</h2>
         <ul>
           <li class="fragment roll-in">Singletons</li>
-          <li class="fragment roll-in">No built-in tag support.</li>
+          <li class="fragment roll-in">Tags are a little more complicated to use than they could be.</li>
           <li class="fragment">So features. Much daunting.
             <br />
             <img src="sofeatures.jpg" />
           </li>
+        </ul>
+      </section>
+      <section>
+        <h2>How it works</h2>
+        <ul>
+          <li class="fragment">DDLog - Singleton that all logging is routed through
+            <ul>
+              <li class="fragment">Determines which loggers (console, ASL, file, etc.) to send the message to.</li>
+              <li class="fragment">Sends the message to said loggers in a thread-safe manner asyncronously (if not an error, and async is enabled).</li>
+            </ul>
+          </li>
+          <li class="fragment">Loggers - Classes that handle sending the messages to specific locations
+            <ul>
+              <li class="fragment">Can be given a Formatter to customize the display of the messages sent to it.</li>
+              <li class="fragment">Can be configured so that different outputs receive different sets of log levels.</li>
+              <li class="fragment">Easy to implement your own.</li>
+            </ul>
+          </li>
+          <li class="fragment">Formatters - Classes that take a log message object and return a string representation of it.</li>
+          <li class="fragment">Macros - One for each log level, wrap the call to DDLog to make it <em>much</em> easier to use.</li>
         </ul>
       </section>
       <section>
@@ -316,7 +343,165 @@
       </section>
 
       <section>
-        <h1>Demo Time</h1>
+        <h2>Advanced Bits</h2>
+      </section>
+      <section>
+        <h2>The Macros</h2>
+        <ul>
+          <li class="fragment">Wrap a pretty hairy objective-c method call into compound preprocessor macros that end up looking the same as NSLog
+            <pre class="fragment"><code data-trim class="objc">
+[DDLog log:YES
+     level:ddLogLevel
+      flag:LOG_FLAG_DEBUG
+   context:0
+      file:__FILE__
+  function:sel_getName(_cmd)
+      line:__LINE__
+       tag:nil
+    format:@"ohai"];
+            </code></pre>
+            <pre class="fragment"><code data-trim class="objc">DDLogDebug(@"ohai");</code></pre>
+          </li>
+          <li class="fragment">They basically boil down to:
+            <pre><code data-trim class="objc">if (logFlagForThisMacro & ddLogLevel) { /* execute log message */ }</code></pre>
+          </li>
+        </ul>
+        <div class="fragment">
+          <hr />
+          <p class="smaller">Check out <a href="https://github.com/CocoaLumberjack/CocoaLumberjack/blob/master/Lumberjack/DDLog.h">DDLog.h</a> if you're curious, it's thoroughly commented and a good read.</p>
+        </div>
+      </section>
+      <section>
+        <h2>Log Levels</h2>
+        <ul>
+          <li class="fragment">Comes with 5 levels by default
+            <ul>
+              <li>Error</li>
+              <li>Warn</li>
+              <li>Info</li>
+              <li>Debug</li>
+              <li>Verbose</li>
+            </ul>
+          </li>
+          <li class="fragment">Defined as bit masks</li>
+          <li class="fragment">You can override the log levels with your own:
+            <ol>
+              <li class="fragment"><code>#undef</code> the default ones and their macros</li>
+              <li class="fragment"><code>#define</code> your new ones</li>
+              <li class="fragment">Pass in a log level that includes your custom log level(s) when you add your logger(s):
+                <pre><code data-trim class="objc">[DDLog addLogger:[DDTTYLogger sharedInstance] withLogLevel:LOG_LEVEL_ALL];</code></pre>
+              </li>
+            </ol>
+            <div class="fragment">
+              <hr />
+              <p class="smaller">Check out <a href="https://github.com/CocoaLumberjack/CocoaLumberjack/wiki/CustomLogLevels">CustomLogLevels</a> for an example.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Custom Loggers</h2>
+        <ul>
+          <li class="fragment">Allow you to direct log output to an arbitrary location/display.</li>
+          <li class="fragment">Can be any object which implements the <code>DDLogger</code> protocol.<br />
+            <ul>
+              <li class="fragment">The <code>DDLogger</code> protocol has 3 required methods:
+                <pre class="fragment"><code data-trim class="objc">- (void)logMessage:(DDLogMessage *)logMessage;</code></pre>
+                <pre class="fragment"><code data-trim data-noescape class="objc">
+- (id &lt;DDLogFormatter&gt;)logFormatter;
+- (void)setLogFormatter:(id &lt;DDLogFormatter&gt;)formatter;
+                </code></pre>
+              </li>
+              <li class="fragment">It also has 2 optional methods which help with thread safety:
+                <pre class="fragment"><code data-trim class="objc">
+- (void)didAddLogger;
+- (void)willRemoveLogger;
+                </code></pre>
+              </li>
+              <li class="fragment"><code>DDAbstractLogger</code> provides a thread-safe implementation of the logFormatter getter/setter, so if you subclass it
+                you only need to implement <code>logMessage:</code>.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Custom Loggers</h2>
+        <p class="larger">Basic implementation</p>
+        <pre><code data-trim class="objc">
+@implementation MyCustomLogger
+
+- (void)logMessage:(DDLogMessage *)logMessage {
+    NSString *logMsg = logMessage->logMsg;
+
+    if (self->formatter) {
+        logMsg = [self->formatter formatLogMessage:logMessage];
+    }
+
+    if (logMsg) {
+        // Write logMsg to wherever...
+    }
+}
+
+@end
+        </code></pre>
+      </section>
+      <section>
+        <h2 style="text-transform: none;">DDLogMessage</h2>
+        <pre class="fragment"><code data-trim class="objc">
+@interface DDLogMessage : NSObject {
+// The public variables below can be accessed directly (for speed).
+// For example: logMessage->logLevel
+@public
+    int logLevel;
+    int logFlag;
+    int logContext;
+    NSString *logMsg;
+    NSDate *timestamp;
+    const char *file;
+    const char *function;
+    int lineNumber;
+
+    mach_port_t machThreadID;
+    char *queueLabel;
+    NSString *threadName;
+
+    id tag;
+    DDLogMessageOptions options;
+}
+        </code></pre>
+        <pre class="fragment"><code data-trim class="objc">
+/* Returns the threadID as it appears in NSLog.
+ * That is, it is a hexadecimal value which is calculated from the machThreadID. **/
+- (NSString *)threadID;
+
+/* Convenience method to get just the file name, as the file variable is generally the full file path.
+ * This method does not include the file extension, which is generally unwanted for logging purposes. **/
+- (NSString *)fileName;
+
+/* Returns the function variable in NSString form.*/
+- (NSString *)methodName;
+
+@end
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Log Formatters</h2>
+        <ul>
+          <li class="fragment">Can <em>optionally</em> be added to any <code>DDLogger</code></li>
+          <li class="fragment">Can be used to format the log message before it is presented by the logger.</li>
+          <li class="fragment">Can also be used to <em>filter</em> log messages from the logger they are attached to.</li>
+          <li class="fragment">Any object which implements the <code>DDLogFormatter</code> protocol can be used as a formatter.</li>
+          <li class="fragment">The <code>DDLogFormatter</code> protocol has 1 required method:
+            <pre class="fragment"><code class="objc">- (NSString *)formatLogMessage:(DDLogMessage *)logMessage;</code></pre>
+          </li>
+          <li class="fragment">It also has 2 optional methods which help with thread safety:
+            <pre class="fragment"><code data-trim class="objc">
+- (void)didAddToLogger:(id &lt;DDLogger&gt;)logger;
+- (void)willRemoveFromLogger:(id &lt;DDLogger&gt;)logger;
+            </code></pre>
+          </li>
+        </ul>
       </section>
     </section>
 
@@ -353,14 +538,15 @@
     // Factor of the display size that should remain empty around the content
     margin: 0.1,
 
-    width: 1200,
-    height: 780,
+    width: 1400,
+    height: 900,
     // Bounds for smallest/largest possible scale to apply to content
     minScale: 0.5,
     maxScale: 2.0,
 
     theme: 'solarized', // available themes are in /css/theme
     transition: 'concave', // default/cube/page/concave/zoom/linear/fade/none
+    speed: 'fast',
 
     // Parallax scrolling
     //parallaxBackgroundImage: '/background.jpg',
